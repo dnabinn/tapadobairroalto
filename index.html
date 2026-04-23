@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <!-- DearFlip flipbook -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dflip@3.7.1/dist/css/dflip.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dflip@3.7.1/dist/css/themify-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dflip@1.0.0/css/dflip.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dflip@1.0.0/css/themify-icons.min.css">
 
   <style>
     /* ── Reset ── */
@@ -1074,7 +1074,7 @@
 
   <!-- ══ DEARFLIP ══ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dflip@3.7.1/dist/js/dflip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dflip@1.0.0/js/dflip.min.js"></script>
   <script>
   $(function () {
     DFLIP.defaults.webgl        = true;
@@ -1082,8 +1082,8 @@
     DFLIP.defaults.autoEnableThumbnail = false;
     DFLIP.defaults.backgroundColor  = '#1a0900';
     DFLIP.defaults.backgroundImage  = '';
-    DFLIP.defaults.pdfjsSrc         = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
-    DFLIP.defaults.pdfjsWorkerSrc   = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    DFLIP.defaults.pdfjsSrc         = 'https://cdn.jsdelivr.net/npm/dflip@1.0.0/js/libs/pdf.min.js';
+    DFLIP.defaults.pdfjsWorkerSrc   = 'https://cdn.jsdelivr.net/npm/dflip@1.0.0/js/libs/pdf.worker.min.js';
 
     $('#df-flipbook').flipBook('menu.pdf', {
       height     : 700,
