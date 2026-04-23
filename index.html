@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- DearFlip flipbook -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dearflip/dist/css/dflip.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dearflip/dist/css/themify-icons.min.css">
 
   <style>
     /* ── Reset ── */
@@ -336,89 +339,14 @@
     }
 
     /* ══════════════════════════════════════
-       MENU PDF — FLIPBOOK
+       MENU PDF — DEARFLIP
     ══════════════════════════════════════ */
-    #menu-section { background: var(--brown2); padding: 5.5rem 4rem 6rem; }
-    .menu-header { text-align: center; margin-bottom: 1rem; }
+    #menu-section { background: var(--brown2); padding: 5rem 2rem 6rem; }
+    .menu-header { text-align: center; margin-bottom: 2rem; }
     .menu-header p { font-size: 0.82rem; color: rgba(255,255,255,0.45); margin-top: 0.8rem; }
-
-    /* Stage */
-    .flipbook-stage-wrap {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 2.5rem 0 2rem;
-    }
-    .flipbook-stage {
-      position: relative;
-      background: radial-gradient(ellipse 80% 55% at 50% 40%, #2e1700 0%, #0d0400 100%);
-      padding: 2.8rem 3rem 3.2rem;
-      border-radius: 4px;
-      box-shadow:
-        0 40px 100px rgba(0,0,0,0.88),
-        0 0 0 1px rgba(201,150,42,0.1),
-        inset 0 1px 0 rgba(255,255,255,0.03);
-      overflow-x: auto; /* allow scroll on very small screens */
-    }
-    /* Floor shadow */
-    .flipbook-stage::after {
-      content: '';
-      position: absolute; bottom: -26px; left: 12%; right: 12%; height: 26px;
-      background: radial-gradient(ellipse, rgba(0,0,0,0.6) 0%, transparent 70%);
-      filter: blur(10px); pointer-events: none;
-    }
-
-    /* Loading overlay */
-    .flipbook-loading {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-width: min(900px, 90vw); height: 540px;
-      gap: 1.4rem; color: rgba(255,255,255,0.45);
-      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-    }
-    .flip-spinner {
-      width: 48px; height: 48px;
-      border: 3px solid rgba(201,150,42,0.12);
-      border-top-color: var(--gold); border-radius: 50%;
-      animation: flip-spin 0.85s linear infinite;
-    }
-    @keyframes flip-spin { to { transform: rotate(360deg); } }
-    .flip-progress-track {
-      width: 230px; height: 2px;
-      background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
-    }
-    .flip-progress-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--gold), var(--accent2));
-      width: 0%; transition: width 0.22s ease; border-radius: 2px;
-    }
-    .flip-pct-label { color: var(--gold); font-size: 0.68rem; }
-
-    /* PageFlip canvas container */
-    #menu-flipbook { display: none; line-height: 0; }
-
-    /* Controls */
-    .flipbook-controls {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0.8rem; margin-top: 2rem; flex-wrap: wrap;
-    }
-    .flip-ctrl-btn {
-      display: inline-flex; align-items: center; gap: 0.45rem;
-      padding: 0.62rem 1.5rem;
-      background: rgba(201,150,42,0.08); color: var(--gold);
-      border: 1px solid rgba(201,150,42,0.28);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.66rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase;
-      cursor: pointer; transition: 0.2s;
-    }
-    .flip-ctrl-btn:hover:not([disabled]) { background: rgba(201,150,42,0.2); border-color: rgba(201,150,42,0.7); }
-    .flip-ctrl-btn[disabled] { opacity: 0.2; cursor: default; }
-    #flip-page-info {
-      font-family: 'Playfair Display', serif; font-size: 0.82rem;
-      color: rgba(255,255,255,0.35); min-width: 130px; text-align: center;
-    }
-
-    .pdf-actions {
-      display: flex; align-items: center; justify-content: center;
-      gap: 1rem; margin-top: 2rem; flex-wrap: wrap;
-    }
+    .df-wrapper { max-width: 1100px; margin: 0 auto; }
+    /* Override DearFlip background to match site */
+    #df-flipbook .dflip-book-bg { background: var(--brown2) !important; }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 0.5rem;
       padding: 0.8rem 1.8rem;
@@ -606,8 +534,7 @@
       .g-item:nth-child(7) { grid-column: 1;     grid-row: 5; }
       .g-item:nth-child(8) { grid-column: 2;     grid-row: 5; }
       .video-grid { grid-template-columns: 1fr; }
-      .flipbook-stage { padding: 1.2rem 0.5rem 1.8rem; }
-      .flipbook-loading { min-width: unset; width: 94vw; height: 380px; }
+      #menu-section { padding: 4rem 1rem 4rem; }
       .reviews-grid { grid-template-columns: 1fr; }
       .reviews-grid .review-card:nth-child(n) { grid-column: 1; }
       .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
@@ -796,15 +723,15 @@
     <div class="exp-photos">
       <!-- Indoor & Outdoor Dining -->
       <div class="exp-photo">
-        <img src="images/imgi_44_2.jpg" alt="Indoor and outdoor dining at Tapa do Bairro Alto" loading="lazy" />
+        <img src="images/indoor-outdoor.jpeg" alt="Indoor and outdoor dining at Tapa do Bairro Alto" loading="lazy" />
       </div>
       <!-- Group Menu -->
       <div class="exp-photo">
-        <img src="images/imgi_43_1.jpg" alt="Group dining at Tapa do Bairro Alto" loading="lazy" />
+        <img src="images/group-menu.jpeg" alt="Group dining at Tapa do Bairro Alto" loading="lazy" />
       </div>
       <!-- Fresh Food, Great Wine -->
       <div class="exp-photo">
-        <img src="images/imgi_29_WhatsApp-Image-2026-01-23-at-5.08.00-PM.jpg" alt="Fresh tapas — signature dish" loading="lazy" />
+        <img src="images/fresh-food.jpeg" alt="Fresh tapas and great wine" loading="lazy" />
       </div>
     </div>
     <div class="exp-features">
@@ -855,45 +782,15 @@
     </div>
   </section>
 
-  <!-- ══ MENU PDF — FLIPBOOK ══ -->
+  <!-- ══ MENU PDF — DEARFLIP ══ -->
   <section id="menu-section">
     <div class="menu-header">
       <p class="section-label light">A Nossa</p>
       <h2 class="section-title light">Ementa</h2>
       <p>Folheie a nossa selecção de petiscos, pratos e vinhos.</p>
     </div>
-
-    <div class="flipbook-stage-wrap">
-      <div class="flipbook-stage">
-        <!-- Loading state -->
-        <div id="flipbook-loading" class="flipbook-loading">
-          <div class="flip-spinner"></div>
-          <span>A carregar ementa</span>
-          <div class="flip-progress-track">
-            <div class="flip-progress-fill" id="flip-fill"></div>
-          </div>
-          <span class="flip-pct-label" id="flip-pct">0%</span>
-        </div>
-        <!-- PageFlip renders here -->
-        <div id="menu-flipbook"></div>
-      </div>
-
-      <div class="flipbook-controls">
-        <button class="flip-ctrl-btn" id="btn-flip-prev" disabled>‹ Anterior</button>
-        <span id="flip-page-info">—</span>
-        <button class="flip-ctrl-btn" id="btn-flip-next" disabled>Próxima ›</button>
-      </div>
-    </div>
-
-    <div class="pdf-actions">
-      <a href="menu.pdf" download class="btn-ghost">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Descarregar Ementa
-      </a>
-      <a href="menu.pdf" target="_blank" class="btn-ghost">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Abrir em Nova Janela
-      </a>
+    <div class="df-wrapper">
+      <div id="df-flipbook"></div>
     </div>
   </section>
 
@@ -1178,118 +1075,29 @@
     });
   </script>
 
-  <!-- ══ FLIPBOOK INIT ══ -->
+  <!-- ══ DEARFLIP ══ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dearflip/dist/js/dflip.min.js"></script>
   <script>
-  (function () {
-    var started = false;
+  $(function () {
+    DFLIP.defaults.webgl        = true;
+    DFLIP.defaults.autoEnableOutline = false;
+    DFLIP.defaults.autoEnableThumbnail = false;
+    DFLIP.defaults.backgroundColor  = '#1a0900';
+    DFLIP.defaults.backgroundImage  = '';
+    DFLIP.defaults.pdfjsSrc         = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    DFLIP.defaults.pdfjsWorkerSrc   = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    function loadScript(src) {
-      return new Promise(function (res, rej) {
-        var s = document.createElement('script');
-        s.src = src; s.onload = res; s.onerror = rej;
-        document.head.appendChild(s);
-      });
-    }
-
-    async function run() {
-      try {
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
-        await loadScript('https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js');
-
-        var lib = window.pdfjsLib;
-        lib.GlobalWorkerOptions.workerSrc =
-          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-        var ld    = document.getElementById('flipbook-loading');
-        var fill  = document.getElementById('flip-fill');
-        var pctEl = document.getElementById('flip-pct');
-        var fc    = document.getElementById('menu-flipbook');
-        var bPrev = document.getElementById('btn-flip-prev');
-        var bNext = document.getElementById('btn-flip-next');
-        var info  = document.getElementById('flip-page-info');
-
-        var pdf = await lib.getDocument('menu.pdf').promise;
-        var N   = pdf.numPages;
-
-        // Determine scale based on screen width
-        var isMobile = window.innerWidth < 760;
-        var SCALE    = isMobile ? 0.55 : 0.9;
-
-        // Get page dimensions
-        var vp0 = (await pdf.getPage(1)).getViewport({ scale: SCALE });
-        var W   = Math.round(vp0.width);
-        var H   = Math.round(vp0.height);
-
-        // Render each page → JPEG data-URL
-        var imgs = [];
-        for (var i = 1; i <= N; i++) {
-          var page = await pdf.getPage(i);
-          var vp   = page.getViewport({ scale: SCALE });
-          var cv   = document.createElement('canvas');
-          cv.width  = Math.round(vp.width);
-          cv.height = Math.round(vp.height);
-          await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
-          imgs.push(cv.toDataURL('image/jpeg', 0.82));
-          var p = Math.round(i / N * 100);
-          if (fill)  fill.style.width = p + '%';
-          if (pctEl) pctEl.textContent = p + '%';
-        }
-
-        // Swap loading → flipbook
-        ld.style.display = 'none';
-        fc.style.display = 'block';
-
-        var pf = new St.PageFlip(fc, {
-          width: W, height: H,
-          size: 'fixed',
-          maxShadowOpacity: 0.6,
-          showCover: true,
-          mobileScrollSupport: false,
-          usePortrait: false,
-          startZIndex: 10,
-          flippingTime: 700,
-          useMouseEvents: true,
-        });
-
-        pf.loadFromImages(imgs);
-
-        function refresh(idx) {
-          var cur = (idx !== undefined ? idx : pf.getCurrentPageIndex()) + 1;
-          if (info)  info.textContent = 'Página ' + cur + ' de ' + N;
-          if (bPrev) bPrev.disabled   = (cur <= 1);
-          if (bNext) bNext.disabled   = (cur >= N);
-        }
-
-        pf.on('flip', function (e) { refresh(e.data); });
-        pf.on('init', function ()  { refresh(); });
-
-        if (bPrev) bPrev.onclick = function () { pf.flipPrev(); };
-        if (bNext) bNext.onclick = function () { pf.flipNext(); };
-        if (bPrev) bPrev.disabled = false;
-        if (bNext) bNext.disabled = false;
-
-      } catch (err) {
-        console.warn('Flipbook init failed, showing iframe fallback:', err);
-        var ld = document.getElementById('flipbook-loading');
-        if (ld) ld.innerHTML =
-          '<iframe src="menu.pdf#toolbar=1&navpanes=0&view=FitH" ' +
-          'style="width:min(860px,92vw);height:560px;border:0;display:block;background:#fff;"></iframe>';
-      }
-    }
-
-    // Lazy: start only when section scrolls into view (saves bandwidth)
-    var section = document.getElementById('menu-section');
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries, obs) {
-        if (entries[0].isIntersecting) {
-          obs.disconnect();
-          if (!started) { started = true; run(); }
-        }
-      }, { threshold: 0.08 }).observe(section);
-    } else {
-      run();
-    }
-  })();
+    $('#df-flipbook').flipBook('menu.pdf', {
+      height     : 700,
+      webgl      : true,
+      backgroundColor : '#1a0900',
+      backgroundImage : '',
+      duration   : 800,
+      direction  : DFLIP.DIRECTION.LTR,
+      singlePage : false,
+    });
+  });
   </script>
 </body>
 </html>
