@@ -336,125 +336,88 @@
     }
 
     /* ══════════════════════════════════════
-       MENU PDF — 3D FLIPBOOK
+       MENU PDF — FLIPBOOK
     ══════════════════════════════════════ */
     #menu-section { background: var(--brown2); padding: 5.5rem 4rem 6rem; }
-    .menu-header { text-align: center; margin-bottom: 0.5rem; }
+    .menu-header { text-align: center; margin-bottom: 1rem; }
     .menu-header p { font-size: 0.82rem; color: rgba(255,255,255,0.45); margin-top: 0.8rem; }
 
-    /* Scene wrapper gives perspective */
-    .book-scene {
-      perspective: 2200px;
-      display: flex; justify-content: center;
-      padding: 3.5rem 0 2.5rem;
-      position: relative;
+    /* Stage */
+    .flipbook-stage-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2.5rem 0 2rem;
     }
-    /* Ambient glow behind book */
-    .book-scene::before {
+    .flipbook-stage {
+      position: relative;
+      background: radial-gradient(ellipse 80% 55% at 50% 40%, #2e1700 0%, #0d0400 100%);
+      padding: 2.8rem 3rem 3.2rem;
+      border-radius: 4px;
+      box-shadow:
+        0 40px 100px rgba(0,0,0,0.88),
+        0 0 0 1px rgba(201,150,42,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+      overflow-x: auto; /* allow scroll on very small screens */
+    }
+    /* Floor shadow */
+    .flipbook-stage::after {
       content: '';
-      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 80px;
-      background: radial-gradient(ellipse, rgba(201,150,42,0.18) 0%, transparent 70%);
-      filter: blur(20px);
+      position: absolute; bottom: -26px; left: 12%; right: 12%; height: 26px;
+      background: radial-gradient(ellipse, rgba(0,0,0,0.6) 0%, transparent 70%);
+      filter: blur(10px); pointer-events: none;
     }
 
-    /* Book wrapper — 3D tilt + float animation */
-    .book-3d {
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateY(-12deg) rotateX(2deg);
-      animation: bookFloat 6s ease-in-out infinite;
-      filter: drop-shadow(-18px 24px 50px rgba(0,0,0,0.75));
-      cursor: pointer;
+    /* Loading overlay */
+    .flipbook-loading {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-width: min(900px, 90vw); height: 540px;
+      gap: 1.4rem; color: rgba(255,255,255,0.45);
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
     }
-    .book-3d:hover {
-      animation: none;
-      transform: rotateY(-5deg) rotateX(1deg) scale(1.015);
-      transition: transform 0.55s ease;
+    .flip-spinner {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(201,150,42,0.12);
+      border-top-color: var(--gold); border-radius: 50%;
+      animation: flip-spin 0.85s linear infinite;
     }
-    @keyframes bookFloat {
-      0%,100% { transform: rotateY(-12deg) rotateX(2deg) translateY(0px); }
-      50%      { transform: rotateY(-12deg) rotateX(2deg) translateY(-10px); }
+    @keyframes flip-spin { to { transform: rotate(360deg); } }
+    .flip-progress-track {
+      width: 230px; height: 2px;
+      background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
     }
+    .flip-progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--gold), var(--accent2));
+      width: 0%; transition: width 0.22s ease; border-radius: 2px;
+    }
+    .flip-pct-label { color: var(--gold); font-size: 0.68rem; }
 
-    /* Left spine (extruded in 3D) */
-    .book-spine {
-      position: absolute;
-      left: -22px; top: 0;
-      width: 22px; height: 100%;
-      background: linear-gradient(to right, #0c0300, #1e0c00, #130700);
-      transform-origin: right center;
-      transform: rotateY(-75deg);
-      border-radius: 2px 0 0 2px;
-    }
-    .book-spine-label {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translateX(-50%) translateY(-50%) rotate(-90deg);
-      font-family: 'Playfair Display', serif;
-      font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(201,150,42,0.65);
-      white-space: nowrap;
-    }
+    /* PageFlip canvas container */
+    #menu-flipbook { display: none; line-height: 0; }
 
-    /* Right page-stack edge */
-    .book-pages-edge {
-      position: absolute;
-      right: -9px; top: 3px;
-      width: 9px; height: calc(100% - 6px);
-      background: repeating-linear-gradient(
-        to bottom,
-        #f2e9d8 0px, #e9ddc8 0.8px, #f6eed8 1.6px
-      );
-      transform-origin: left center;
-      transform: rotateY(72deg);
+    /* Controls */
+    .flipbook-controls {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.8rem; margin-top: 2rem; flex-wrap: wrap;
     }
-
-    /* The visible book face (cover + iframe) */
-    .book-face {
-      width: 820px; height: 700px;
-      background: #0e0600;
-      overflow: hidden;
-      position: relative;
-      border-left: 1px solid rgba(201,150,42,0.25);
+    .flip-ctrl-btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.62rem 1.5rem;
+      background: rgba(201,150,42,0.08); color: var(--gold);
+      border: 1px solid rgba(201,150,42,0.28);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.66rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase;
+      cursor: pointer; transition: 0.2s;
     }
-
-    /* Gutter shadow (binding crease) */
-    .book-gutter {
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 28px;
-      background: linear-gradient(to right, rgba(0,0,0,0.55), transparent);
-      z-index: 5; pointer-events: none;
-    }
-    /* Top/bottom edge shadow */
-    .book-face::before, .book-face::after {
-      content: ''; position: absolute; left: 0; right: 0; z-index: 4; pointer-events: none;
-    }
-    .book-face::before { top: 0; height: 18px; background: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent); }
-    .book-face::after  { bottom: 0; height: 18px; background: linear-gradient(to top, rgba(0,0,0,0.35), transparent); }
-
-    .book-face iframe {
-      display: block; width: 100%; height: 100%; border: 0;
-    }
-
-    /* Corner dog-ear flip */
-    .book-corner {
-      position: absolute; bottom: 0; right: 0;
-      width: 52px; height: 52px;
-      z-index: 6; pointer-events: none;
-    }
-    .book-corner::before {
-      content: '';
-      position: absolute; bottom: 0; right: 0;
-      border-style: solid;
-      border-width: 0 0 52px 52px;
-      border-color: transparent transparent rgba(201,150,42,0.18) transparent;
-      filter: drop-shadow(-2px -2px 4px rgba(0,0,0,0.3));
+    .flip-ctrl-btn:hover:not([disabled]) { background: rgba(201,150,42,0.2); border-color: rgba(201,150,42,0.7); }
+    .flip-ctrl-btn[disabled] { opacity: 0.2; cursor: default; }
+    #flip-page-info {
+      font-family: 'Playfair Display', serif; font-size: 0.82rem;
+      color: rgba(255,255,255,0.35); min-width: 130px; text-align: center;
     }
 
     .pdf-actions {
       display: flex; align-items: center; justify-content: center;
-      gap: 1rem; margin-top: 0; flex-wrap: wrap;
+      gap: 1rem; margin-top: 2rem; flex-wrap: wrap;
     }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -643,10 +606,8 @@
       .g-item:nth-child(7) { grid-column: 1;     grid-row: 5; }
       .g-item:nth-child(8) { grid-column: 2;     grid-row: 5; }
       .video-grid { grid-template-columns: 1fr; }
-      .book-scene { padding: 1.5rem 0; }
-      .book-3d { transform: rotateY(0deg) rotateX(0deg); animation: none; filter: drop-shadow(0 12px 30px rgba(0,0,0,0.6)); }
-      .book-spine, .book-pages-edge { display: none; }
-      .book-face { width: 100%; max-width: 100%; height: 500px; }
+      .flipbook-stage { padding: 1.2rem 0.5rem 1.8rem; }
+      .flipbook-loading { min-width: unset; width: 94vw; height: 380px; }
       .reviews-grid { grid-template-columns: 1fr; }
       .reviews-grid .review-card:nth-child(n) { grid-column: 1; }
       .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
@@ -833,14 +794,17 @@
       <h2 class="section-title light">Enjoy a true tapas experience in the heart of Lisbon —<br/>perfect for sharing, relaxing, and celebrating.</h2>
     </div>
     <div class="exp-photos">
+      <!-- Indoor & Outdoor Dining -->
       <div class="exp-photo">
-        <img src="images/imgi_44_2.jpg" alt="Indoor dining at Tapa do Bairro Alto" loading="lazy" />
+        <img src="images/imgi_44_2.jpg" alt="Indoor and outdoor dining at Tapa do Bairro Alto" loading="lazy" />
       </div>
+      <!-- Group Menu -->
       <div class="exp-photo">
-        <img src="images/imgi_43_1.jpg" alt="Outdoor terrace at night, Bairro Alto" loading="lazy" />
+        <img src="images/imgi_43_1.jpg" alt="Group dining at Tapa do Bairro Alto" loading="lazy" />
       </div>
+      <!-- Fresh Food, Great Wine -->
       <div class="exp-photo">
-        <img src="images/imgi_32_WhatsApp-Image-2026-01-23-at-5.28.51-PM.jpg" alt="Fresh tapas and food" loading="lazy" />
+        <img src="images/imgi_29_WhatsApp-Image-2026-01-23-at-5.08.00-PM.jpg" alt="Fresh tapas — signature dish" loading="lazy" />
       </div>
     </div>
     <div class="exp-features">
@@ -891,32 +855,33 @@
     </div>
   </section>
 
-  <!-- ══ MENU PDF — 3D FLIPBOOK ══ -->
+  <!-- ══ MENU PDF — FLIPBOOK ══ -->
   <section id="menu-section">
     <div class="menu-header">
       <p class="section-label light">A Nossa</p>
       <h2 class="section-title light">Ementa</h2>
-      <p>Explore a nossa selecção de petiscos, pratos e vinhos.</p>
+      <p>Folheie a nossa selecção de petiscos, pratos e vinhos.</p>
     </div>
 
-    <div class="book-scene">
-      <div class="book-3d">
-        <!-- Left 3D spine -->
-        <div class="book-spine">
-          <span class="book-spine-label">Tapa do Bairro Alto · Ementa</span>
+    <div class="flipbook-stage-wrap">
+      <div class="flipbook-stage">
+        <!-- Loading state -->
+        <div id="flipbook-loading" class="flipbook-loading">
+          <div class="flip-spinner"></div>
+          <span>A carregar ementa</span>
+          <div class="flip-progress-track">
+            <div class="flip-progress-fill" id="flip-fill"></div>
+          </div>
+          <span class="flip-pct-label" id="flip-pct">0%</span>
         </div>
-        <!-- Right page-stack edge -->
-        <div class="book-pages-edge"></div>
-        <!-- Front face: the open book -->
-        <div class="book-face">
-          <div class="book-gutter"></div>
-          <iframe
-            src="menu.pdf#toolbar=1&navpanes=0&scrollbar=1&view=FitH"
-            title="Ementa Tapa do Bairro Alto"
-            loading="lazy">
-          </iframe>
-          <div class="book-corner"></div>
-        </div>
+        <!-- PageFlip renders here -->
+        <div id="menu-flipbook"></div>
+      </div>
+
+      <div class="flipbook-controls">
+        <button class="flip-ctrl-btn" id="btn-flip-prev" disabled>‹ Anterior</button>
+        <span id="flip-page-info">—</span>
+        <button class="flip-ctrl-btn" id="btn-flip-next" disabled>Próxima ›</button>
       </div>
     </div>
 
@@ -1211,6 +1176,120 @@
       if (e.key === 'ArrowRight') lbStep(1);
       if (e.key === 'ArrowLeft')  lbStep(-1);
     });
+  </script>
+
+  <!-- ══ FLIPBOOK INIT ══ -->
+  <script>
+  (function () {
+    var started = false;
+
+    function loadScript(src) {
+      return new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = src; s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+
+    async function run() {
+      try {
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+        await loadScript('https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js');
+
+        var lib = window.pdfjsLib;
+        lib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        var ld    = document.getElementById('flipbook-loading');
+        var fill  = document.getElementById('flip-fill');
+        var pctEl = document.getElementById('flip-pct');
+        var fc    = document.getElementById('menu-flipbook');
+        var bPrev = document.getElementById('btn-flip-prev');
+        var bNext = document.getElementById('btn-flip-next');
+        var info  = document.getElementById('flip-page-info');
+
+        var pdf = await lib.getDocument('menu.pdf').promise;
+        var N   = pdf.numPages;
+
+        // Determine scale based on screen width
+        var isMobile = window.innerWidth < 760;
+        var SCALE    = isMobile ? 0.55 : 0.9;
+
+        // Get page dimensions
+        var vp0 = (await pdf.getPage(1)).getViewport({ scale: SCALE });
+        var W   = Math.round(vp0.width);
+        var H   = Math.round(vp0.height);
+
+        // Render each page → JPEG data-URL
+        var imgs = [];
+        for (var i = 1; i <= N; i++) {
+          var page = await pdf.getPage(i);
+          var vp   = page.getViewport({ scale: SCALE });
+          var cv   = document.createElement('canvas');
+          cv.width  = Math.round(vp.width);
+          cv.height = Math.round(vp.height);
+          await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+          imgs.push(cv.toDataURL('image/jpeg', 0.82));
+          var p = Math.round(i / N * 100);
+          if (fill)  fill.style.width = p + '%';
+          if (pctEl) pctEl.textContent = p + '%';
+        }
+
+        // Swap loading → flipbook
+        ld.style.display = 'none';
+        fc.style.display = 'block';
+
+        var pf = new St.PageFlip(fc, {
+          width: W, height: H,
+          size: 'fixed',
+          maxShadowOpacity: 0.6,
+          showCover: true,
+          mobileScrollSupport: false,
+          usePortrait: false,
+          startZIndex: 10,
+          flippingTime: 700,
+          useMouseEvents: true,
+        });
+
+        pf.loadFromImages(imgs);
+
+        function refresh(idx) {
+          var cur = (idx !== undefined ? idx : pf.getCurrentPageIndex()) + 1;
+          if (info)  info.textContent = 'Página ' + cur + ' de ' + N;
+          if (bPrev) bPrev.disabled   = (cur <= 1);
+          if (bNext) bNext.disabled   = (cur >= N);
+        }
+
+        pf.on('flip', function (e) { refresh(e.data); });
+        pf.on('init', function ()  { refresh(); });
+
+        if (bPrev) bPrev.onclick = function () { pf.flipPrev(); };
+        if (bNext) bNext.onclick = function () { pf.flipNext(); };
+        if (bPrev) bPrev.disabled = false;
+        if (bNext) bNext.disabled = false;
+
+      } catch (err) {
+        console.warn('Flipbook init failed, showing iframe fallback:', err);
+        var ld = document.getElementById('flipbook-loading');
+        if (ld) ld.innerHTML =
+          '<iframe src="menu.pdf#toolbar=1&navpanes=0&view=FitH" ' +
+          'style="width:min(860px,92vw);height:560px;border:0;display:block;background:#fff;"></iframe>';
+      }
+    }
+
+    // Lazy: start only when section scrolls into view (saves bandwidth)
+    var section = document.getElementById('menu-section');
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries, obs) {
+        if (entries[0].isIntersecting) {
+          obs.disconnect();
+          if (!started) { started = true; run(); }
+        }
+      }, { threshold: 0.08 }).observe(section);
+    } else {
+      run();
+    }
+  })();
   </script>
 </body>
 </html>
